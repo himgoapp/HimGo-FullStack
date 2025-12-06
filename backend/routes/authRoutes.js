@@ -1,0 +1,14 @@
+const express = require('express');
+const { sendOtp, verifyOtp, completeProfileSetup } = require('../controllers/authController');
+const { protect } = require('../middleware/auth'); // Will create this next
+
+const router = express.Router();
+
+// Public routes for login flow
+router.post('/send-otp', sendOtp);
+router.post('/verify-otp', verifyOtp);
+
+// Private route for profile completion after verification
+router.put('/profile-setup', protect, completeProfileSetup);
+
+module.exports = router;
