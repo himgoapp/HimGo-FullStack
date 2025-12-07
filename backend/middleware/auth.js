@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const Driver = require('../models/Driver');
 
 // Middleware to protect routes from unauthorized access
 exports.protect = async (req, res, next) => {
@@ -18,15 +18,15 @@ exports.protect = async (req, res, next) => {
         // 2. Verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         
-        // 3. Find user by ID from the decoded token payload
-        const user = await User.findById(decoded.id);
+        // 3. Find driver by ID from the decoded token payload
+        const driver = await Driver.findById(decoded.id);
 
-        if (!user) {
-            return res.status(401).json({ message: 'User belonging to this token no longer exists.' });
+        if (!driver) {
+            return res.status(401).json({ message: 'Driver belonging to this token no longer exists.' });
         }
 
-        // 4. Attach user object to request
-        req.user = user;
+        // 4. Attach driver object to request
+        req.driver = driver;
         next();
     } catch (error) {
         // Handle common JWT errors (e.g., expired token)

@@ -1,14 +1,16 @@
 const express = require('express');
-const { sendOtp, verifyOtp, completeProfileSetup } = require('../controllers/authController');
-const { protect } = require('../middleware/auth'); // Will create this next
+const { sendOTP, verifyOTP, getProfile, updateProfile, checkKYCStatus } = require('../controllers/authController');
+const { protect } = require('../middleware/auth');
 
 const router = express.Router();
 
 // Public routes for login flow
-router.post('/send-otp', sendOtp);
-router.post('/verify-otp', verifyOtp);
+router.post('/send-otp', sendOTP);
+router.post('/verify-otp', verifyOTP);
 
-// Private route for profile completion after verification
-router.put('/profile-setup', protect, completeProfileSetup);
+// Private routes for authenticated drivers
+router.get('/profile', protect, getProfile);
+router.put('/profile', protect, updateProfile);
+router.get('/check-kyc', protect, checkKYCStatus);
 
 module.exports = router;
